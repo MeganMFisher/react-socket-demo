@@ -3,8 +3,8 @@ const express = require('express'),
       massive = require('massive'),
       config = require('./config.js'),
       cors = require('cors'),
-      http = require('http'),
-      io = require('socket.io')//(server, { serveClient: false });
+      http = require('http').server(app),
+      io = require('socket.io')(http)
 
 massive(config.database).then(db => {
     app.set('db', db)
@@ -19,6 +19,17 @@ app.use(bodyParser.json())
 app.use(cors())
 
 const controller = require('./controller.js')
+
+
+io.on('connection', function(socket) {
+    console.log('we have a connection!')
+    socket.on('new-message', function(msg){
+        console.log(msg)
+        io.emit('receive-message', msg)
+    })
+})
+
+
 
 // io.on('connection', socket => {
 //   console.log('A user connected')

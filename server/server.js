@@ -3,8 +3,8 @@ const express = require('express'),
       massive = require('massive'),
       config = require('./config.js'),
       cors = require('cors')
-    //   server = require('http').createServer(app),
-    //   io = require('socket.io')(server, { serveClient: false });
+      server = require('http').createServer(app),
+      io = require('socket.io')(server, { serveClient: false });
 
 massive(config.database).then(db => {
     app.set('db', db)
@@ -52,7 +52,7 @@ const controller = require('./controller.js')
 
 
 app.get('/messages', controller.getAllMessages)
-app.post('/api/message/', controller.createMessage)
+app.post('/message', controller.createMessage)
 
 
 app.listen(port, function() {

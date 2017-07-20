@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
-import { getMessages } from '../service/messages';
+import { getMessages, sendMessage } from '../service/messages';
 
 
 // const socket = io('http://localhost:3010')
 
 export default class Chat extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.state = {
             messages: [],
-            user: {
-                name: "Megan",
-                id: 1
-            }
+            newMessage: '',
+            id: 1
         }
+
+        this.handleChange = this.handleChange.bind(this)
+        this.addMessage = this.addMessage.bind(this)
     }
 
     componentDidMount() {
@@ -26,6 +27,40 @@ export default class Chat extends Component {
         });
     })
     }
+
+    addMessage (event) {
+    event.preventDefault();
+        var message = {
+            message: this.state.newMessage,
+            id: this.state.id
+        }
+        console.log(message)
+      sendMessage(message)
+      .then(() => {
+        this.getMessages()
+        this.setState({  
+          newMessage: ''
+        })
+      })
+  }
+
+//    const newSpecies = {
+//         name: this.state.newSpecies,
+//         status: 'famished'
+//     }
+
+//     this.setState({
+//       species: [...this.state.species, newSpecies]
+//     })
+
+
+   handleChange(event) {
+    this.setState({
+      newMessage: event.target.value
+    })
+    console.log(this.state.newMessage)
+  }
+
 
     // componentDidMount() {
     //     if (!this.state.user) {
@@ -128,6 +163,8 @@ export default class Chat extends Component {
            {/* <AddMessage createMessage={this.createMessage} />  */}
 
         </div>
+            <input onChange={ this.handleChange } value={ this.state.newMessage }/>
+            <button onClick={ this.addMessage }>Send</button>
       </div>
     );
   }

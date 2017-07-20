@@ -2,7 +2,7 @@
   "name": "react-socket-demo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,7 +18,11 @@
   "homepage": "https://github.com/MeganMFisher/react-socket-demo#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
     "express": "^4.15.3",
-    "massive": "^3.0.0"
+    "http": "0.0.0",
+    "massive": "^3.0.0",
+    "server": "^1.0.0-beta.1",
+    "socket.io": "^2.0.3"
   }
 }

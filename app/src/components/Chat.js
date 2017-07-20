@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import io from 'socket.io-client';
+// import axios from 'axios';
+// import io from 'socket.io-client';
 import { getMessages, sendMessage } from '../service/messages';
 
 
@@ -37,21 +37,16 @@ export default class Chat extends Component {
         console.log(message)
       sendMessage(message)
       .then(() => {
-        this.getMessages()
+        getMessages().then(messages => {
+      this.setState({
+          messages: messages
+        });
+        })
         this.setState({  
           newMessage: ''
         })
       })
   }
-
-//    const newSpecies = {
-//         name: this.state.newSpecies,
-//         status: 'famished'
-//     }
-
-//     this.setState({
-//       species: [...this.state.species, newSpecies]
-//     })
 
 
    handleChange(event) {

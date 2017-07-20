@@ -52,7 +52,7 @@ const controller = require('./controller.js')
 
 
 app.get('/messages', controller.getAllMessages)
-app.post('/message', controller.createMessage)
+app.post('/messages', controller.createMessage)
 
 
 app.listen(port, function() {

@@ -3,25 +3,48 @@ const express = require('express'),
       massive = require('massive'),
       config = require('./config.js'),
       cors = require('cors')
-      server = require('http').createServer(app),
-      io = require('socket.io')(server, { serveClient: false });
 
-massive(config.database).then(db => {
-    app.set('db', db)
-}).catch((err) => {
-    console.log(err)
+const app = express()
+
+app.use((req, res, next)=>{
+    console.log(req.url);
+    console.log(req.domain);
+    next();
 })
+const server = require('http').Server(app)
+const io = require('socket.io')(server, {serveClient:true})
+    //   io = new SocketIOServer(server, { serveClient: false });
+
+// massive(config.database).then(db => {
+//     app.set('db', db)
+// }).catch((err) => {
+//     console.log(err)
+// })
 
 var port = 3010;
 
-var app = express()
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({origin: true, credentials: true}));
 
-const controller = require('./controller.js')
+// app.use(function (req, res, next) {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept-Type');
+//     res.header('Access-Control-Allow-Credentials', 'true');
+//     next();
+// })
 
-// io.on('connection', socket => {
-//   console.log('A user connected')
+// const controller = require('./controller.js')
+
+
+connections = [];
+// io.set('origins', '*:*');
+// io.origins('*:*')
+// io.set('origins', 'localhost:3005');
+
+
+
+io.on('connection', socket => {
+  console.log('A user connected')
 
 //   socket.on('user_connected', data => {
 //     socket.broadcast.emit('user_connected', { data })
@@ -48,11 +71,11 @@ const controller = require('./controller.js')
 //   setTimeout(function () {
 //     socket.send('Sent a message 4seconds after connection!');
 //   }, 4000);
-// });
+});
 
 
-app.get('/messages', controller.getAllMessages)
-app.post('/messages', controller.createMessage)
+// app.get('/messages', controller.getAllMessages)
+// app.post('/messages', controller.createMessage)
 
 
 app.listen(port, function() {

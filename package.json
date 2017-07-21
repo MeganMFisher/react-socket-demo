@@ -23,6 +23,7 @@
     "http": "0.0.0",
     "massive": "^3.0.0",
     "server": "^1.0.0-beta.1",
-    "socket.io": "^2.0.3"
+    "socket.io": "^2.0.3",
+    "socket.io-client": "^2.0.3"
   }
 }

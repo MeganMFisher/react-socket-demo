@@ -9,7 +9,6 @@ module.exports = {
     },
 
     createMessage: (req, res) => {
-        console.log(req.body)
         var stuff = [
             req.body.message,
             req.body.id

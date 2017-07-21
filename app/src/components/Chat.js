@@ -1,63 +1,67 @@
 import React, { Component } from 'react';
 // import axios from 'axios';
-// import io from 'socket.io-client';
-import { getMessages, sendMessage } from '../service/messages';
+import io from 'socket.io-client';
+// import { getMessages, sendMessage } from '../service/messages';
 
 
-// const socket = io('http://localhost:3010')
+const socket = io()  
+socket.on('connection', (data)=>{
+    console.log(data);
+})
 
 export default class Chat extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            messages: [],
-            newMessage: '',
-            id: 1
+            messages: []
+            // newMessage: '',
+            // id: 1,
+            // user: 1
         }
 
-        this.handleChange = this.handleChange.bind(this)
-        this.addMessage = this.addMessage.bind(this)
+        // this.handleChange = this.handleChange.bind(this)
+        // this.addMessage = this.addMessage.bind(this)    
+        // this.createMessage = this.createMessage.bind(this);
+        // this.handleUserConnected = this.handleUserConnected.bind(this)
+        // this.handleChatMessage = this.handleChatMessage.bind(this)
     }
-
-    componentDidMount() {
-        getMessages().then(messages => {
-      this.setState({
-          messages: messages
-        });
-    })
-    }
-
-    addMessage (event) {
-    event.preventDefault();
-        var message = {
-            message: this.state.newMessage,
-            id: this.state.id
-        }
-        console.log(message)
-      sendMessage(message)
-      .then(() => {
-        getMessages().then(messages => {
-      this.setState({
-          messages: messages
-        });
-        })
-        this.setState({  
-          newMessage: ''
-        })
-      })
-  }
-
-
-   handleChange(event) {
-    this.setState({
-      newMessage: event.target.value
-    })
-    console.log(this.state.newMessage)
-  }
-
 
     // componentDidMount() {
+    //     getMessages().then(messages => {
+    //   this.setState({
+    //       messages: messages
+    //     });
+    // })
+    // }
+
+//     addMessage (event) {
+//     event.preventDefault();
+//         var message = {
+//             message: this.state.newMessage,
+//             id: this.state.id
+//         }
+//       sendMessage(message)
+//       .then(() => {
+//         getMessages().then(messages => {
+//       this.setState({
+//           messages: messages
+//         });
+//         })
+//         this.setState({  
+//           newMessage: ''
+//         })
+//       })
+//   }
+
+//    handleChange(event) {
+//     this.setState({
+//       newMessage: event.target.value
+//     })
+//   }
+
+
+    componentDidMount() {
     //     if (!this.state.user) {
     //     const input = prompt('sockets are working')
     //     const user = (input)
@@ -67,6 +71,23 @@ export default class Chat extends Component {
     //     console.log(this.state.user)
     //   if (!this.state.messages.length) this.getMessages();
     // }
+
+        // socket.emit('useer_connected', this.state.user)
+
+        // socket.on('error', data => {
+        //     console.log('this error happened', data)
+        // })
+    
+
+    //     getMessages().then(messages => {
+    //   this.setState({
+    //       messages: messages
+    //     });
+    //     console.log(this.state.messages)
+    
+    // })
+    }
+    
     // socket.emit('user_connected', this.state.user)
     // this.handleUserConnected()
     // this.handleChatMessage()
@@ -136,7 +157,6 @@ export default class Chat extends Component {
 //   }
 
   render() {
-    console.log(this.state.messages)
     const message = this.state.messages.filter(message => message)
 
       .map((message, index) => (

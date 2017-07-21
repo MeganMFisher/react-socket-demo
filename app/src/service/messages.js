@@ -15,6 +15,5 @@ import axios from 'axios'
   }
 
   export function sendMessage(message) {
-      console.log(message)
       return axios.post( 'http://localhost:3010/messages', message).then( response => response.data );
   }

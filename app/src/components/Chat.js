@@ -3,30 +3,47 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 // import { getMessages, sendMessage } from '../service/messages';
 
-
-const socket = io()  
-socket.on('connection', (data)=>{
-    console.log(data);
-})
+let socket = io(`http://localhost:3010/`)
 
 export default class Chat extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            messages: []
-            // newMessage: '',
-            // id: 1,
-            // user: 1
+            messages: ['hello'],
+            newMessage: '',
+            id: 1,
+            user: 1
         }
 
-        // this.handleChange = this.handleChange.bind(this)
-        // this.addMessage = this.addMessage.bind(this)    
+        this.handleChange = this.handleChange.bind(this)
+        this.addMessage = this.addMessage.bind(this)    
         // this.createMessage = this.createMessage.bind(this);
         // this.handleUserConnected = this.handleUserConnected.bind(this)
         // this.handleChatMessage = this.handleChatMessage.bind(this)
     }
 
+      componentDidMount() {
+    socket.on('from:server', res => {
+      this.setState({
+        messages: [...this.state.messages, res]
+      })
+    })
+  }
+
+   addMessage() {
+       console.log(this.state.newMessage)
+    socket.emit('to:server', {newMessage: this.state.newMessage})
+    this.setState({newMessage: ''})
+  }
+
+
+  handleChange(e) {
+    this.setState({
+      newMessage: e.target.value
+    })
+    console.log(this.state.newMessage)
+  }
     // componentDidMount() {
     //     getMessages().then(messages => {
     //   this.setState({
@@ -61,18 +78,8 @@ export default class Chat extends Component {
 //   }
 
 
-    componentDidMount() {
-    //     if (!this.state.user) {
-    //     const input = prompt('sockets are working')
-    //     const user = (input)
-    //     this.setState({
-    //         user
-    //     })
-    //     console.log(this.state.user)
-    //   if (!this.state.messages.length) this.getMessages();
-    // }
-
-        // socket.emit('useer_connected', this.state.user)
+    // componentDidMount() {
+        // socket.emit('user_connected', this.state.user)
 
         // socket.on('error', data => {
         //     console.log('this error happened', data)
@@ -86,7 +93,7 @@ export default class Chat extends Component {
     //     console.log(this.state.messages)
     
     // })
-    }
+    // }
     
     // socket.emit('user_connected', this.state.user)
     // this.handleUserConnected()
@@ -157,12 +164,11 @@ export default class Chat extends Component {
 //   }
 
   render() {
-    const message = this.state.messages.filter(message => message)
-
-      .map((message, index) => (
-        <div key={index}>
-            <div id='sender'>{message.sender_id}</div>
-            <div id='message'>{message.message_body}</div>
+    const message = this.state.messages.map((message, i) => (
+        <div key={i}>
+            <div id='sender'>{message}</div>
+            {/* <div id='sender'>{message.sender_id}</div>
+            <div id='message'>{message.message_body}</div> */}
         </div>
       ));
 
